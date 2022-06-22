@@ -1,0 +1,60 @@
+# Example genetIC parameter file
+
+# Cosmology, based on Planck 2018
+Om           0.3158
+Ol           0.6842
+s8           0.8117
+ns           0.9660
+hubble       0.6732
+z            200
+
+# Import transfer function data.
+# If you change the cosmological parameters above be sure to update the transfer
+# function accordingly. Some help is given in the folder tools/transfer_function/
+# within the genetIC distribution
+camb	../step_1_uniform/planck_2018_transfer_out.dat
+
+# Seed the field using the default algorithm (parallel Fourier space):
+random_seed	8896131
+
+# Specify output directory:
+outname zoom
+outdir	 ./
+
+# Pick output format:
+outformat gadget3
+
+# Specify the base-level grid, 50 Mpc/h, 128 cells on a side:
+base_grid 50.0 128
+
+# Set gadget particle type 2, for the base grid so that we can set a different
+# softening length for these particles in the gadget configuration. For other codes,
+# this has no effect. When writing a tipsy file, the softening length is automatically
+# determined in proportion to the square root of the particle mass.
+gadget_particle_type 2
+
+# Load the IDs of the particles we want to zoom
+id_file zoom_particles_694.txt
+
+# Open a zoom grid, 4 times smaller than the parent, with 512 cells on a side
+# I.e. equivalent of 4*(512/128) = 16 times higher spatial resolution,
+# 16^3 ~ 4e3 times better mass resolution
+
+zoom_grid 4 512
+
+# Set gadget particle type 1, for zoom particles (see rationale above)
+gadget_particle_type 1
+
+# put some padding around the zoom region so that there is a gradual change in
+# particle mass rather than a sudden one
+autopad 2
+
+# Centre/wrap the box so that the zoom region is conveniently in the middle
+centre_output
+
+done
+
+# The below is only for debugging and visualisation purposes. Normally you would
+# not need it, but it helps make some pretty plots.
+dump_grid 0
+dump_grid 1
