@@ -18,7 +18,7 @@ camb	planck_2018_transfer_out.dat
 random_seed	8896131
 
 # Specify output directory:
-outname test
+outname uniform
 outdir	 ./
 
 # Pick output format:
