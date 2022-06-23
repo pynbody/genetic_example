@@ -1,0 +1,59 @@
+#### The first parts of the paramfile for a zoom are copy/pasted from the zoom
+#### paramfile that you can find in step_2_zoom
+Om           0.3158
+Ol           0.6842
+s8           0.8117
+ns           0.9660
+hubble       0.6732
+z            200
+
+camb	../step_1_uniform/planck_2018_transfer_out.dat
+
+random_seed	8896131
+
+outname zoom
+outdir	 ./
+
+outformat gadget3
+base_grid 50.0 128
+gadget_particle_type 2
+id_file ../step_2_zoom/zoom_particles_694.txt
+expand_flagged_region 1
+zoom_grid 4 512
+gadget_particle_type 1
+autopad 2
+centre_output
+
+
+#### Now, here's the new stuff:
+
+# Load the IDs of the z=0 zoomed halo, and tell genetIC not to allow their
+# mean overdensity to change:
+
+id_file halo_z0_particles.txt
+modify overdensity relative 1.0
+
+# Load the IDs of the z=5, and tell genetIC to increase the mean overdensity
+# by 20%:
+
+id_file progenitor_z5_particles.txt
+modify overdensity relative 1.2
+
+# How much to increase by? Why 20% in the above? In the end, it takes some
+# experimentation, but 20% changes are often quite significant. Other than
+# re-running the simulation, a guide is to look at the delta chi^2 that
+# genetic reports (in this case, around 5). Numbers that are much bigger than
+# 1 indicate you have generated a rare field configuration. But the interpretation
+# is not as simple as a likelihood going as exp(-delta chi^2/2) ~= 0.1, which would
+# naively suggest the new object is 10x less common than the original. It would
+# be great if we could rely on that, but there are also Jacobian and degeneracy
+# factors to consider, which can be enormous. Delta chi^2 is really just a guide as to
+# "how big a modification is this", without having a strict statistical significance.
+
+
+done
+
+# The below is only for debugging and visualisation purposes. Normally you would
+# not need it, but it helps make some pretty plots.
+dump_grid 0
+dump_grid 1
