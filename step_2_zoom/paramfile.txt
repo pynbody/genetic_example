@@ -1,6 +1,5 @@
-# Example genetIC parameter file
-
-# Cosmology, based on Planck 2018
+#### The first parts of the paramfile for a zoom are copy/pasted from the uniform
+#### res paramfile that you can find in step_1_uniform
 Om           0.3158
 Ol           0.6842
 s8           0.8117
@@ -8,24 +7,19 @@ ns           0.9660
 hubble       0.6732
 z            200
 
-# Import transfer function data.
-# If you change the cosmological parameters above be sure to update the transfer
-# function accordingly. Some help is given in the folder tools/transfer_function/
-# within the genetIC distribution
 camb	../step_1_uniform/planck_2018_transfer_out.dat
 
-# Seed the field using the default algorithm (parallel Fourier space):
 random_seed	8896131
 
-# Specify output directory:
 outname zoom
 outdir	 ./
 
-# Pick output format:
 outformat gadget3
 
-# Specify the base-level grid, 50 Mpc/h, 128 cells on a side:
 base_grid 50.0 128
+
+
+#### Now, here's the new stuff:
 
 # Set gadget particle type 2, for the base grid so that we can set a different
 # softening length for these particles in the gadget configuration. For other codes,
@@ -35,6 +29,14 @@ gadget_particle_type 2
 
 # Load the IDs of the particles we want to zoom
 id_file zoom_particles_694.txt
+
+# Expand the flagged region by 1 cell on each side. This can be helpful to prevent
+# contamination of low-res particles into the high res region. An alternative strategy
+# is not to expand the flagged region here, but rather to run the zoom simulation and
+# see whether the central region has become contaminated... if it has, it's possible
+# to adjust the zoom region very efficiently by just flagging the particular low-res
+# particles that fell in. However, here we want to keep things simple:
+expand_flagged_region 1
 
 # Open a zoom grid, 4 times smaller than the parent, with 512 cells on a side
 # I.e. equivalent of 4*(512/128) = 16 times higher spatial resolution,
