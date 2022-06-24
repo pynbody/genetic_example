@@ -1,0 +1,40 @@
+#### The majority of this paramfile is copy/pasted from the modified
+#### paramfile that you can find in step_3_modified...
+Om           0.3158
+Ol           0.6842
+s8           0.8117
+ns           0.9660
+hubble       0.6732
+z            200
+camb	../step_1_uniform/planck_2018_transfer_out.dat
+random_seed	8896131
+outname zoom
+outdir	 ./
+outformat gadget3
+base_grid 50.0 128
+gadget_particle_type 2
+id_file ../step_2_zoom/zoom_particles_694.txt
+expand_flagged_region 1
+zoom_grid 4 512
+gadget_particle_type 1
+autopad 2
+centre_output
+
+id_file ../step_3_modify/halo_z0_particles.txt
+modify overdensity relative 1.0
+
+
+
+
+#### Here's the only change: make a bigger (40%) change to the z=5 progenitor overdensity:
+id_file ../step_3_modify/progenitor_z5_particles.txt
+modify overdensity relative 1.4
+
+
+
+done
+
+# The below is only for debugging and visualisation purposes. Normally you would
+# not need it, but it helps make some pretty plots.
+dump_grid 0
+dump_grid 1
